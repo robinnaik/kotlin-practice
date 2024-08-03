@@ -3,12 +3,9 @@
  */
 package com.robinnaik
 
-class App {
-    val greeting: String
-        get() {
-            return "Hello World!"
-        }
-}
+import io.vertx.core.Vertx
+
 fun main() {
-    println(App().greeting)
+    val vertx: Vertx = Vertx.vertx()
+    vertx.deployVerticle(MainVerticle())
 }
