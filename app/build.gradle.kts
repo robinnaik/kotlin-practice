@@ -7,9 +7,7 @@
  */
 
 plugins {
-    // Apply the org.jetbrains.kotlin.jvm Plugin to add support for Kotlin.
-    alias(libs.plugins.jvm)
-
+    kotlin("jvm") version "2.0.20-RC"
     // Apply the application plugin to add support for building a CLI application in Java.
     application
 }
@@ -21,10 +19,10 @@ repositories {
 
 dependencies {
     // This dependency is used by the application.
-    implementation(libs.guava)
     implementation("io.vertx:vertx-core:4.5.9")
     implementation("io.vertx:vertx-lang-kotlin:4.5.9")
     implementation("io.vertx:vertx-web:4.5.9")
+
 
 }
 
@@ -48,4 +46,14 @@ java {
 application {
     // Define the main class for the application.
     mainClass = "com.robinnaik.AppKt"
+}
+
+tasks.jar{
+    manifest.attributes.put("main-class","com.robinnaik.AppKt")
+    val dependencies = configurations
+        .runtimeClasspath
+        .get()
+        .map(::zipTree) // OR .map { zipTree(it) }
+    from(dependencies)
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
